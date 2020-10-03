@@ -7,4 +7,6 @@ export interface AccountData {
   availableBalance: number;
   dollarsBalance?: number;
   dollarsAvailableBalance?: number;
+  increased?: boolean;
+  decreased?: boolean;
 }

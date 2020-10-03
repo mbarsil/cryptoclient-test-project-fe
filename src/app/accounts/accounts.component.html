@@ -64,7 +64,11 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row
         *matRowDef="let row; columns: displayedColumns;"
-        class="account-row p-1">
+        class="account-row p-1"
+        [ngClass]="{
+          'decreased-balance': row.decreased,
+          'increased-balance': row.increased
+         }">
       </mat-row>
 
       <tr class="mat-row" *matNoDataRow>
