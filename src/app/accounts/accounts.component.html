@@ -41,8 +41,8 @@
         <mat-cell
           *matCellDef="let row"
           class="d-flex flex-column justify-content-center align-items-end">
-          <span class="mb-1">{{ row.balance }} BTC</span>
-          <span>${{ row.dollarsBalance }}</span>
+          <span class="mb-1">{{ row.balance?.toFixed(2) }} BTC</span>
+          <span>${{ row.dollarsBalance?.toFixed(2) }}</span>
         </mat-cell>
       </ng-container>
 
@@ -56,8 +56,8 @@
         <mat-cell
           *matCellDef="let row"
           class="d-flex flex-column justify-content-center align-items-end">
-          <span class="mb-1">{{ row.availableBalance }} BTC</span>
-          <span>${{ row.dollarsAvailableBalance }}</span>
+          <span class="mb-1">{{ row.availableBalance?.toFixed(2) }} BTC</span>
+          <span>${{ row.dollarsAvailableBalance?.toFixed(2) }}</span>
         </mat-cell>
       </ng-container>
 

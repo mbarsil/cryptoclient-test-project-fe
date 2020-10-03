@@ -5,6 +5,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
+import { SocketIoModule } from 'ngx-socket-io';
+
+import { environment } from '../environments/environment';
+
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
@@ -26,7 +30,9 @@ import { HomeComponent } from './home/home.component';
     BrowserAnimationsModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+
+    SocketIoModule.forRoot(environment.wsConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]

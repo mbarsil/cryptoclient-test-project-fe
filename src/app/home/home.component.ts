@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ActivationEnd, Router, RouterEvent, UrlSegment } from '@angular/router';
-import { AccountsService } from '../services/accounts.service';
+import { ActivationEnd, Router, UrlSegment } from '@angular/router';
+import { DataProviderService } from '../services/data-provider.service';
 
 @Component({
   selector: 'app-home',
@@ -14,15 +14,14 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private accountsService: AccountsService
+    private dataProviderService: DataProviderService
   ) {
     this.initRouteParamsSubscription();
   }
 
   ngOnInit(): void {
-    this.bitcoinExchangeRate = this.accountsService.bitcoinExchangeRate;
-
     this.initRouteParamsSubscription();
+    this.initBitcoinRateSubscription();
   }
 
   private initRouteParamsSubscription(): void {
@@ -32,6 +31,12 @@ export class HomeComponent implements OnInit {
 
         this.setBreadcrumbs(event.snapshot.url);
       }
+    });
+  }
+
+  private initBitcoinRateSubscription(): void {
+    this.dataProviderService.getBitcoinExchangeRate().subscribe((bitcoinRate: number) => {
+      this.bitcoinExchangeRate = bitcoinRate;
     });
   }
 

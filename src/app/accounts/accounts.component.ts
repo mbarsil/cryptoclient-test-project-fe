@@ -3,8 +3,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 
-import { AccountData } from '../shared/interfaces/common.interface';
-import { AccountsService } from '../services/accounts.service';
+import { AccountData } from './accounts.interface';
+import { DataProviderService } from '../services/data-provider.service';
 
 @Component({
   selector: 'app-accounts',
@@ -12,7 +12,7 @@ import { AccountsService } from '../services/accounts.service';
   styleUrls: ['./accounts.component.scss']
 })
 export class AccountsComponent implements OnInit, AfterViewInit {
-  bitcoinExchangeRate: number;
+  bitcoinExchangeRate = 0;
 
   dataSource: MatTableDataSource<AccountData> = new MatTableDataSource<AccountData>(
   [
@@ -145,13 +145,11 @@ export class AccountsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private accountsService: AccountsService
+    private dataProviderService: DataProviderService
   ) { }
 
   ngOnInit(): void {
-    this.bitcoinExchangeRate = this.accountsService.bitcoinExchangeRate;
-
-    this.generateDollarExchange();
+    this.initBitcoinRateSubscription();
   }
 
   ngAfterViewInit() {
@@ -169,5 +167,13 @@ export class AccountsComponent implements OnInit, AfterViewInit {
     });
 
     this.dataSource.data = newData;
+  }
+
+  private initBitcoinRateSubscription(): void {
+    this.dataProviderService.getBitcoinExchangeRate().subscribe((bitcoinRate: number) => {
+      this.bitcoinExchangeRate = bitcoinRate;
+
+      this.generateDollarExchange();
+    });
   }
 }

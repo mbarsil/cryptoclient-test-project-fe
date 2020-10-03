@@ -13,7 +13,8 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: AccountsComponent,
+        pathMatch: 'full',
+        redirectTo: 'accounts',
         data: { title: 'Accounts' }
       },
       {
