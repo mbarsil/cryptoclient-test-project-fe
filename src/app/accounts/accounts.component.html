@@ -1,0 +1,61 @@
+<div class="mat-elevation-z8 m-5">
+  <mat-table
+    matSort
+    [dataSource]="dataSource">
+
+    <ng-container matColumnDef="accountName">
+      <mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header>
+        Name
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.accountName}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+      <mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header>
+        Category
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.category}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="tag">
+      <mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header>
+        Tag
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.tag}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="balance">
+      <mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header>
+        Balance
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.balance}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="availableBalance">
+      <mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header>
+        Avalailable Balance
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.availableBalance}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    <!-- Row shown when there is no matching data. -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No data to show now.</td>
+    </tr>
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+</div>
