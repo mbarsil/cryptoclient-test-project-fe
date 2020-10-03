@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+
 import { AccountData } from '../shared/interfaces/common.interface';
 
 @Component({
@@ -7,7 +10,7 @@ import { AccountData } from '../shared/interfaces/common.interface';
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.scss']
 })
-export class AccountsComponent implements OnInit {
+export class AccountsComponent implements OnInit, AfterViewInit {
 
   dataSource: MatTableDataSource<AccountData> = new MatTableDataSource<AccountData>(
   [
@@ -137,9 +140,14 @@ export class AccountsComponent implements OnInit {
   displayedColumns = ['accountName', 'category', 'tag', 'balance', 'availableBalance'];
   pageSizeOptions = [5, 10, 25, 100];
 
-  constructor() { }
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit(): void {
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 }
