@@ -5,6 +5,8 @@ import { MatPaginator } from '@angular/material/paginator';
 
 import { AccountData } from '../shared/interfaces/common.interface';
 
+const BITCOIN_RATE = 9789.2;
+
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
@@ -144,10 +146,23 @@ export class AccountsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit(): void {
+    this.generateDollarExchange();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  private generateDollarExchange(): void {
+    const newData = this.dataSource.data.map((rowData: AccountData) => {
+      return {
+        ...rowData,
+        dollarsBalance: rowData.balance * BITCOIN_RATE,
+        dollarsAvailableBalance: rowData.availableBalance * BITCOIN_RATE,
+      };
+    });
+
+    this.dataSource.data = newData;
   }
 }

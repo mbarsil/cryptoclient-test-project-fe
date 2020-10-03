@@ -1,0 +1,11 @@
+@import 'variables';
+
+:host {
+  .mat-sort-header {
+    color: $green;
+  }
+}
+
+.account-row:hover {
+  background-color: $light-green;
+}

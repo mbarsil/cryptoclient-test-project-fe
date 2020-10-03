@@ -5,4 +5,6 @@ export interface AccountData {
   tag: string;
   balance: number;
   availableBalance: number;
+  dollarsBalance?: number;
+  dollarsAvailableBalance?: number;
 }
