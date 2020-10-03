@@ -4,8 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 
 import { AccountData } from '../shared/interfaces/common.interface';
-
-const BITCOIN_RATE = 9789.2;
+import { AccountsService } from '../services/accounts.service';
 
 @Component({
   selector: 'app-accounts',
@@ -13,6 +12,7 @@ const BITCOIN_RATE = 9789.2;
   styleUrls: ['./accounts.component.scss']
 })
 export class AccountsComponent implements OnInit, AfterViewInit {
+  bitcoinExchangeRate: number;
 
   dataSource: MatTableDataSource<AccountData> = new MatTableDataSource<AccountData>(
   [
@@ -138,14 +138,19 @@ export class AccountsComponent implements OnInit, AfterViewInit {
     }
   ]
   );
-
   displayedColumns = ['accountName', 'category', 'tag', 'balance', 'availableBalance'];
   pageSizeOptions = [5, 10, 25, 100];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  constructor(
+    private accountsService: AccountsService
+  ) { }
+
   ngOnInit(): void {
+    this.bitcoinExchangeRate = this.accountsService.bitcoinExchangeRate;
+
     this.generateDollarExchange();
   }
 
@@ -158,8 +163,8 @@ export class AccountsComponent implements OnInit, AfterViewInit {
     const newData = this.dataSource.data.map((rowData: AccountData) => {
       return {
         ...rowData,
-        dollarsBalance: rowData.balance * BITCOIN_RATE,
-        dollarsAvailableBalance: rowData.availableBalance * BITCOIN_RATE,
+        dollarsBalance: rowData.balance * this.bitcoinExchangeRate,
+        dollarsAvailableBalance: rowData.availableBalance * this.bitcoinExchangeRate,
       };
     });
 

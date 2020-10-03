@@ -1,0 +1,30 @@
+@import 'variables';
+
+.bitcoin-rate-header {
+  display: inline-flex;
+  height: 50px;
+  background-color: $light-gray;
+
+  span, img {
+    display: inline-flex;
+    align-self: center;
+  }
+
+  img {
+    height: 24px;
+    margin-right: .5rem;
+  }
+}
+
+.route-breadcrumbs-header {
+  height: 100px;
+  font-weight: 500;
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  p {
+    font-size: .825rem;
+  }
+}

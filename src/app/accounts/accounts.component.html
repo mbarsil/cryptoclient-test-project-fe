@@ -1,75 +1,77 @@
-<div class="mat-elevation-z8 m-5">
-  <mat-table
-    matSort
-    [dataSource]="dataSource">
+<div class="accounts-container p-4">
+  <div class="mat-elevation-z8">
+    <mat-table
+      matSort
+      [dataSource]="dataSource">
 
-    <ng-container matColumnDef="accountName">
-      <mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header>
-        Name
-      </mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.name }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="accountName">
+        <mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header>
+          Name
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.name }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="category">
-      <mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header>
-        Category
-      </mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.category }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="category">
+        <mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header>
+          Category
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.category }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="tag">
-      <mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header>
-        Tag
-      </mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.tag }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="tag">
+        <mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header>
+          Tag
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.tag }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="balance">
-      <mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        class="d-flex flex-row justify-content-end">
-        Balance
-      </mat-header-cell>
-      <mat-cell
-        *matCellDef="let row"
-        class="d-flex flex-column justify-content-center align-items-end">
-        <span class="mb-1">{{ row.balance }} BTC</span>
-        <span>${{ row.dollarsBalance }}</span>
-      </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="balance">
+        <mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="d-flex flex-row justify-content-end">
+          Balance
+        </mat-header-cell>
+        <mat-cell
+          *matCellDef="let row"
+          class="d-flex flex-column justify-content-center align-items-end">
+          <span class="mb-1">{{ row.balance }} BTC</span>
+          <span>${{ row.dollarsBalance }}</span>
+        </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="availableBalance">
-      <mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        class="d-flex flex-row justify-content-end">
-        Avalailable Balance
-      </mat-header-cell>
-      <mat-cell
-        *matCellDef="let row"
-        class="d-flex flex-column justify-content-center align-items-end">
-        <span class="mb-1">{{ row.availableBalance }} BTC</span>
-        <span>${{ row.dollarsAvailableBalance }}</span>
-      </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="availableBalance">
+        <mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="d-flex flex-row justify-content-end">
+          Avalailable Balance
+        </mat-header-cell>
+        <mat-cell
+          *matCellDef="let row"
+          class="d-flex flex-column justify-content-center align-items-end">
+          <span class="mb-1">{{ row.availableBalance }} BTC</span>
+          <span>${{ row.dollarsAvailableBalance }}</span>
+        </mat-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row
-      *matRowDef="let row; columns: displayedColumns;"
-      class="account-row p-1">
-    </mat-row>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row
+        *matRowDef="let row; columns: displayedColumns;"
+        class="account-row p-1">
+      </mat-row>
 
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">No data to show now.</td>
-    </tr>
-  </mat-table>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data to show now.</td>
+      </tr>
+    </mat-table>
 
-  <mat-paginator [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+  </div>
 </div>

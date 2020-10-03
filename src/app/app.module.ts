@@ -11,12 +11,14 @@ import { AppComponent } from './app.component';
 import { AccountsComponent } from './accounts/accounts.component';
 import { AccountDetailComponent } from './accounts/account-detail/account-detail.component';
 import { MatSortModule } from '@angular/material/sort';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AccountsComponent,
-    AccountDetailComponent
+    AccountDetailComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
