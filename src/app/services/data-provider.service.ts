@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 
 import { AccountData } from '../accounts/accounts.interface';
+
+import { environment } from '../../environments/environment';
 
 const BITCOIN_RATE_CHANNEL = 'bitcoinRate';
 const ACCOUNTS_BALANCE_CHANNEL = 'accountsBalance';
@@ -18,10 +21,11 @@ export class DataProviderService {
   private accountData$: Observable<AccountData>;
 
   constructor(
-    private socket: Socket
+    private socket: Socket,
+    private http: HttpClient
   ) { }
 
-  getBitcoinExchangeRate(): Observable<number> {
+  getBitcoinExchangeRateChannel(): Observable<number> {
     if (!this.bitcoinExchangeRate$) {
       this.bitcoinExchangeRate$ = this.connectToChannel(BITCOIN_RATE_CHANNEL);
     }
@@ -29,7 +33,7 @@ export class DataProviderService {
     return this.bitcoinExchangeRate$;
   }
 
-  getAccountBalance(): Observable<AccountData[]> {
+  getAccountBalanceChannel(): Observable<AccountData[]> {
     if (!this.accountBalance$) {
       this.accountBalance$ = this.connectToChannel(ACCOUNTS_BALANCE_CHANNEL);
     }
@@ -37,7 +41,7 @@ export class DataProviderService {
     return this.accountBalance$;
   }
 
-  getAccountById(id: number): Observable<AccountData> {
+  getAccountByIdChannel(id: number): Observable<AccountData> {
     if (!this.accountData$) {
       this.accountData$ = this.connectToChannel(ACCOUNT_DETAIL_CHANNEL);
 
@@ -45,6 +49,14 @@ export class DataProviderService {
     }
 
     return this.accountData$;
+  }
+
+  async getAccountById<T>(id: number): Promise<T> {
+    try {
+      return await this.http.get<T>(`${environment.wsConfig.url}/accounts/${id}`).toPromise();
+    } catch (errorResp) {
+      throw errorResp;
+    }
   }
 
   disconnectFromChannel(channelName: string) {

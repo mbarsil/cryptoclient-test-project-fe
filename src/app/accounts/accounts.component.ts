@@ -53,7 +53,7 @@ export class AccountsComponent implements OnInit, AfterViewInit {
   }
 
   private initBitcoinRateSubscription(): void {
-    this.dataProviderService.getBitcoinExchangeRate().subscribe((bitcoinRate: number) => {
+    this.dataProviderService.getBitcoinExchangeRateChannel().subscribe((bitcoinRate: number) => {
       this.bitcoinExchangeRate = bitcoinRate;
 
       this.generateDollarExchange();
@@ -61,7 +61,7 @@ export class AccountsComponent implements OnInit, AfterViewInit {
   }
 
   private initAccountsBalanceSubscription(): void {
-    this.dataProviderService.getAccountBalance().subscribe((accounts: AccountData[]) => {
+    this.dataProviderService.getAccountBalanceChannel().subscribe((accounts: AccountData[]) => {
       this.dataSource.data = accounts.map((account: AccountData, index: number) => {
         return this.accountService.getUpdatedAccountStatus(
           account,

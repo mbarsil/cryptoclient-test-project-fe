@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { ACCOUNT_DETAIL_CHANNEL, DataProviderService } from '../../services/data-provider.service';
 import { AccountData } from '../accounts.interface';
@@ -13,12 +14,13 @@ export class AccountDetailComponent  implements OnInit, OnDestroy {
   accountData: AccountData;
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private dataProviderService: DataProviderService,
     private accountsService: AccountsService
   ) { }
 
-  ngOnInit(): void {
-    this.setAccountData();
+  async ngOnInit(): Promise<void> {
+    await this.setAccountData();
     this.initAccountDataSubscription();
   }
 
@@ -26,16 +28,20 @@ export class AccountDetailComponent  implements OnInit, OnDestroy {
     this.dataProviderService.disconnectFromChannel(ACCOUNT_DETAIL_CHANNEL);
   }
 
-  setAccountData(): void {
-    this.accountData = this.accountsService.selectedAccount;
-  }
-
   initAccountDataSubscription(): void {
     this.dataProviderService
-      .getAccountById(this.accountData?.id)
+      .getAccountByIdChannel(this.accountData?.id)
       .subscribe((accountData: AccountData) => {
         this.accountData = accountData;
         // this.generateDollarExchange();
     });
+  }
+
+  async setAccountData(): Promise<void> {
+    if (this.accountsService.selectedAccount) {
+      this.accountData = this.accountsService.selectedAccount;
+    } else {
+      this.accountData = await this.dataProviderService.getAccountById<AccountData>(this.activatedRoute.snapshot.params.id);
+    }
   }
 }

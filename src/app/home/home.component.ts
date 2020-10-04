@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
   }
 
   private initBitcoinRateSubscription(): void {
-    this.dataProviderService.getBitcoinExchangeRate().subscribe((bitcoinRate: number) => {
+    this.dataProviderService.getBitcoinExchangeRateChannel().subscribe((bitcoinRate: number) => {
       this.bitcoinExchangeRate = bitcoinRate;
     });
   }
