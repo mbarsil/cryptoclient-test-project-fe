@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivationEnd, Router, UrlSegment } from '@angular/router';
+import { ActivationEnd, Router } from '@angular/router';
+
+import { filter } from 'rxjs/operators';
+
 import { DataProviderService } from '../services/data-provider.service';
 
 @Component({
@@ -10,7 +13,7 @@ import { DataProviderService } from '../services/data-provider.service';
 export class HomeComponent implements OnInit {
   bitcoinExchangeRate: number;
   routeTitle: string;
-  breadcrumbs: string;
+  breadcrumbs = 'Home';
 
   constructor(
     private router: Router,
@@ -25,13 +28,13 @@ export class HomeComponent implements OnInit {
   }
 
   private initRouteParamsSubscription(): void {
-    this.router.events.subscribe((event: ActivationEnd) => {
-      if (event.snapshot && event.snapshot.url.length) {
-        this.routeTitle = event.snapshot.data.title;
-
-        this.setBreadcrumbs(event.snapshot.url);
-      }
-    });
+    this.router.events
+      .pipe(filter(event => event instanceof ActivationEnd))
+      .subscribe((event: ActivationEnd) => {
+        if (event.snapshot.data.title) {
+          this.setBreadcrumbs(event.snapshot.data.title);
+        }
+      });
   }
 
   private initBitcoinRateSubscription(): void {
@@ -40,9 +43,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  private setBreadcrumbs(urlSegments: UrlSegment[]): void {
-    this.breadcrumbs = urlSegments.reduce((acc, curr) => {
-      return acc + ' / ' + curr.path.charAt(0).toUpperCase() + curr.path.slice(1);
-    }, 'Home');
+  private setBreadcrumbs(urlSegment: string): void {
+    this.breadcrumbs += ' / ' + urlSegment;
   }
 }
