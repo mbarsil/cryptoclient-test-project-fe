@@ -2,9 +2,11 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
 import { AccountData } from './accounts.interface';
 import { DataProviderService } from '../services/data-provider.service';
+import { AccountsService } from './accounts.service';
 
 @Component({
   selector: 'app-accounts',
@@ -21,7 +23,9 @@ export class AccountsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private dataProviderService: DataProviderService
+    private dataProviderService: DataProviderService,
+    private accountService: AccountsService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -34,13 +38,15 @@ export class AccountsComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+  navigateToAccountDetail(row: AccountData) {
+    this.accountService.selectedAccount = row;
+
+    this.router.navigateByUrl(`accounts/${row.id}`);
+  }
+
   private generateDollarExchange(): void {
     const newData = this.dataSource.data.map((rowData: AccountData) => {
-      return {
-        ...rowData,
-        dollarsBalance: rowData.balance * this.bitcoinExchangeRate,
-        dollarsAvailableBalance: rowData.availableBalance * this.bitcoinExchangeRate,
-      };
+      return this.accountService.generateDollarExchange(rowData, this.bitcoinExchangeRate);
     });
 
     this.dataSource.data = newData;
@@ -57,11 +63,10 @@ export class AccountsComponent implements OnInit, AfterViewInit {
   private initAccountsBalanceSubscription(): void {
     this.dataProviderService.getAccountBalance().subscribe((accounts: AccountData[]) => {
       this.dataSource.data = accounts.map((account: AccountData, index: number) => {
-        return {
-          ...account,
-          increased: account.balance > this.dataSource.data[index]?.balance,
-          decreased: account.balance < this.dataSource.data[index]?.balance
-        };
+        return this.accountService.getUpdatedAccountStatus(
+          account,
+          this.dataSource.data[index]?.balance
+        );
       });
 
       this.generateDollarExchange();

@@ -1,1 +1,15 @@
-<p>account-detail works!</p>
+<div class="account-details-header d-flex flex-column justify-content-start mat-elevation-z2 p-3">
+  <div class="d-flex justify-content-start">
+    <span class="mr-1">{{ accountData?.name }}</span>
+    <span>{{ accountData?.tag }}</span>
+  </div>
+  <p>{{ accountData?.category }}</p>
+  <div class="d-flex justify-content-start">
+    <span class="mt-2">{{ accountData?.balance }} BTC</span>
+    <span>(${{ accountData?.dollarsBalance }})</span>
+  </div>
+  <p>Available balance {{ accountData?.availableBalance }} BTC (${{ accountData?.dollarsAvailableBalance }})</p>
+</div>
+<div class="account-details-content mat-elevation-z2 p-3">
+
+</div>

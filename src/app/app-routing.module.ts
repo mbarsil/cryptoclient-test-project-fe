@@ -14,8 +14,7 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'accounts',
-        data: { title: 'Accounts' }
+        redirectTo: 'accounts'
       },
       {
         path: 'accounts',
@@ -25,7 +24,7 @@ const routes: Routes = [
       {
         path: 'accounts/:id',
         component: AccountDetailComponent,
-        data: { title: 'Details' }
+        data: { title: 'Account detail' }
       }
     ]
   }
