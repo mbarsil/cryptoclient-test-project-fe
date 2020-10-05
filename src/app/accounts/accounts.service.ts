@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AccountData } from './accounts.interface';
+
+import { AccountData, Transaction } from './accounts.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,13 @@ export class AccountsService {
       ...account,
       dollarsBalance: account.balance * bitcoinExchangeRate,
       dollarsAvailableBalance: account.availableBalance * bitcoinExchangeRate,
+      transactions: account.transactions.map((transaction: Transaction) => {
+        return {
+          ...transaction,
+          dollarsCredit: transaction.credit * bitcoinExchangeRate,
+          dollarsBalance: transaction.balance * bitcoinExchangeRate
+        };
+      })
     };
   }
 

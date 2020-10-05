@@ -9,4 +9,15 @@ export interface AccountData {
   dollarsAvailableBalance?: number;
   increased?: boolean;
   decreased?: boolean;
+  transactions: Transaction[];
+}
+
+export interface Transaction {
+  id: string;
+  confirmedDate: string;
+  type: string;
+  credit: number;
+  dollarsCredit?: number;
+  balance: number;
+  dollarsBalance?: number;
 }

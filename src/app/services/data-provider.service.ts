@@ -11,6 +11,7 @@ import { environment } from '../../environments/environment';
 const BITCOIN_RATE_CHANNEL = 'bitcoinRate';
 const ACCOUNTS_BALANCE_CHANNEL = 'accountsBalance';
 export const ACCOUNT_DETAIL_CHANNEL = 'accountDetail';
+export const ACCOUNT_DETAIL_STOP_CHANNEL = 'accountDetailStop';
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +62,7 @@ export class DataProviderService {
 
   disconnectFromChannel(channelName: string) {
     this.socket.removeAllListeners(channelName);
+    this.socket.emit(ACCOUNT_DETAIL_STOP_CHANNEL);
   }
 
   private connectToChannel(channel: string): Observable<any> {

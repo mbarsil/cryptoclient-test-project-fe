@@ -1,8 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 import { ACCOUNT_DETAIL_CHANNEL, DataProviderService } from '../../services/data-provider.service';
-import { AccountData } from '../accounts.interface';
+import { AccountData, Transaction } from '../accounts.interface';
 import { AccountsService } from '../accounts.service';
 
 @Component({
@@ -10,8 +13,16 @@ import { AccountsService } from '../accounts.service';
   templateUrl: './account-detail.component.html',
   styleUrls: ['./account-detail.component.scss']
 })
-export class AccountDetailComponent  implements OnInit, OnDestroy {
+export class AccountDetailComponent  implements OnInit, OnDestroy, AfterViewInit {
   accountData: AccountData;
+
+  bitcoinExchangeRate = 0;
+  dataSource: MatTableDataSource<Transaction> = new MatTableDataSource<Transaction>([]);
+  displayedColumns = ['confirmedDate', 'orderId', 'type', 'credit', 'balance'];
+  pageSizeOptions = [15, 25, 50, 100];
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -21,7 +32,13 @@ export class AccountDetailComponent  implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     await this.setAccountData();
+    this.initBitcoinRateSubscription();
     this.initAccountDataSubscription();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   ngOnDestroy(): void {
@@ -33,7 +50,7 @@ export class AccountDetailComponent  implements OnInit, OnDestroy {
       .getAccountByIdChannel(this.accountData?.id)
       .subscribe((accountData: AccountData) => {
         this.accountData = accountData;
-        // this.generateDollarExchange();
+        this.generateDollarExchange();
     });
   }
 
@@ -42,6 +59,24 @@ export class AccountDetailComponent  implements OnInit, OnDestroy {
       this.accountData = this.accountsService.selectedAccount;
     } else {
       this.accountData = await this.dataProviderService.getAccountById<AccountData>(this.activatedRoute.snapshot.params.id);
+
+      this.dataSource.data = this.accountData.transactions;
     }
+  }
+
+  private initBitcoinRateSubscription(): void {
+    this.dataProviderService.getBitcoinExchangeRateChannel().subscribe((bitcoinRate: number) => {
+      this.bitcoinExchangeRate = bitcoinRate;
+
+      this.generateDollarExchange();
+    });
+  }
+
+  private generateDollarExchange(): void {
+    this.dataSource.data = this.accountsService
+      .generateDollarExchange(
+        this.accountData,
+        this.bitcoinExchangeRate
+      ).transactions;
   }
 }

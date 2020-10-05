@@ -1,0 +1,21 @@
+@import 'variables';
+
+.account-name {
+  font-size: 1rem;
+  display: inline-flex;
+  align-self: center;
+}
+
+.account-tag {
+  background-color: $light-green;
+  border-radius: 8px;
+}
+
+.account-balance {
+  font-size: 2rem;
+}
+
+.available-balance {
+  font-size: 1rem;
+  font-weight: 500;
+}
