@@ -5,6 +5,7 @@
 
 @import '../../../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css';
 
+@import 'variables';
 
 html, body {
   height: 100%;
@@ -12,3 +13,15 @@ html, body {
 }
 
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.green-text {
+  color: $green;
+}
+
+.dark-green-text {
+  color: $dark-green;
+}

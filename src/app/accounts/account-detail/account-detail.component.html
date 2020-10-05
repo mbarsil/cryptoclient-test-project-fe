@@ -1,0 +1,89 @@
+<div class="account-details-header d-flex flex-column justify-content-start mat-elevation-z2 p-3 mb-4">
+  <div class="d-flex justify-content-start">
+    <span class="account-name dark-green-text mr-3">{{ accountData?.name }}</span>
+    <span class="account-tag px-3">{{ accountData?.tag }}</span>
+  </div>
+  <p class="dark-green-text mb-4">{{ accountData?.category }}</p>
+  <div class="green-text account-balance d-flex justify-content-start mb-4">
+    <strong>{{ accountData?.balance?.toFixed(2) }} BTC</strong>
+    <span>(${{ accountData?.dollarsBalance?.toFixed(2) }})</span>
+  </div>
+  <p class="available-balance dark-green-text">Available balance {{ accountData?.availableBalance?.toFixed(2) }} BTC (${{ accountData?.dollarsAvailableBalance?.toFixed(2) }})</p>
+</div>
+<div class="account-details-content mat-elevation-z2">
+  <mat-table
+    matSort
+    matSortActive="confirmedDate"
+    matSortDirection="desc"
+    [dataSource]="dataSource">
+
+    <ng-container matColumnDef="confirmedDate">
+      <mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header>
+        Confirmed date
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.confirmedDate }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="orderId">
+      <mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header>
+        Order ID
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.id }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header>
+        Transaction type
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.type }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="credit">
+      <mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        class="d-flex flex-row justify-content-end">
+        Credit
+      </mat-header-cell>
+      <mat-cell
+        *matCellDef="let row"
+        class="d-flex flex-column justify-content-center align-items-end">
+        <span class="mb-1">{{ row.credit?.toFixed(2) }} BTC</span>
+        <span>${{ row.dollarsCredit?.toFixed(2) }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="balance">
+      <mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        class="d-flex flex-row justify-content-end">
+        Balance
+      </mat-header-cell>
+      <mat-cell
+        *matCellDef="let row"
+        class="d-flex flex-column justify-content-center align-items-end">
+        <span class="mb-1">{{ row.balance?.toFixed(2) }} BTC</span>
+        <span>${{ row.dollarsBalance?.toFixed(2) }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row
+      *matRowDef="let row; columns: displayedColumns;"
+      class="account-row p-1">
+    </mat-row>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No data to show now.</td>
+    </tr>
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+</div>
