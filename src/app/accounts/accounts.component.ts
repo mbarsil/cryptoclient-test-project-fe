@@ -17,14 +17,14 @@ export class AccountsComponent implements OnInit, AfterViewInit {
   bitcoinExchangeRate = 0;
   dataSource: MatTableDataSource<AccountData> = new MatTableDataSource<AccountData>([]);
   displayedColumns = ['accountName', 'category', 'tag', 'balance', 'availableBalance'];
-  pageSizeOptions = [5, 10, 25, 100];
+  pageSizeOptions = [15, 25, 50, 100];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private dataProviderService: DataProviderService,
-    private accountService: AccountsService,
+    private accountsService: AccountsService,
     private router: Router
   ) { }
 
@@ -39,14 +39,14 @@ export class AccountsComponent implements OnInit, AfterViewInit {
   }
 
   navigateToAccountDetail(row: AccountData) {
-    this.accountService.selectedAccount = row;
+    this.accountsService.selectedAccount = row;
 
     this.router.navigateByUrl(`accounts/${row.id}`);
   }
 
   private generateDollarExchange(): void {
     const newData = this.dataSource.data.map((rowData: AccountData) => {
-      return this.accountService.generateDollarExchange(rowData, this.bitcoinExchangeRate);
+      return this.accountsService.generateDollarExchange(rowData, this.bitcoinExchangeRate);
     });
 
     this.dataSource.data = newData;
@@ -63,7 +63,7 @@ export class AccountsComponent implements OnInit, AfterViewInit {
   private initAccountsBalanceSubscription(): void {
     this.dataProviderService.getAccountBalanceChannel().subscribe((accounts: AccountData[]) => {
       this.dataSource.data = accounts.map((account: AccountData, index: number) => {
-        return this.accountService.getUpdatedAccountStatus(
+        return this.accountsService.getUpdatedAccountStatus(
           account,
           this.dataSource.data[index]?.balance
         );
